@@ -30,7 +30,13 @@ export const data = {
             },
             listingsPage: {
                 propertySearchOne: 'bytu',
-                propertySearchTwo: 'domu'
+                propertySearchTwo: 'domu',
+                orderByOne: 'Nejnovější',
+                orderByTwo: 'Nejlepší',
+                orderByThree: 'Nejlevnější',
+                buttonLoadMore: 'Načíst další',
+                buttonSearchInMap: 'Hledat v této oblasti',
+                buttonShowLeasesDetail: 'Zobrazit inzerát'
             }
         }
     ]

@@ -3,6 +3,9 @@ import {createStep, catchReq, checkReq, checkUrl} from "../support/utilities.js"
 
 const homepageData = data.ulovDomovData[0].homepage;
 const listingsData = data.ulovDomovData[0].listingsPage;
+let buttonLoadMore = listingsData.buttonLoadMore;
+let buttonSearchInMap = listingsData.buttonSearchInMap;
+let buttonShowLeasesDetail = listingsData.buttonShowLeasesDetail;
 
 class ListingsPage {
     searchScroller = () => cy.get('#search-scroller');
@@ -20,13 +23,13 @@ class ListingsPage {
     anchorLeasesDetail = () => this.headingLeasesPreview().parent();
     spanLeasesPrice = () => this.anchorLeasesDetail().get('span');
     buttonsPreviewOfLease = () =>  cy.get('[data-test="actionButtonsOnPreview"]');
-    buttonShowLeasesDetail = (text) => cy.contains('a', text);
+    buttonShowLeasesDetail = () => cy.contains('a', buttonShowLeasesDetail);
     buttonContact = () => cy.get('[data-test="contactButton"]');
     buttonSaveOffer = () => cy.get('[data-test="saveOfferFromPreview"]');
     buttonCreateWatchdog = () => cy.get('[data-test="watchDogPromoButtonVariable"]')
-    buttonSearchInMap = (text) => this.mapOfLeases().contains('button', text);
-    buttonLoadMore = (text) => this.searchScroller().contains('button', text);
-    buttonMapZoomIn = () => cy.get('button[aria-label="Zoom in"]');
+    buttonSearchInMap = () => this.mapOfLeases().contains('button', buttonSearchInMap);
+    buttonLoadMore = () => this.searchScroller().contains('button', buttonLoadMore);
+    buttonMapZoomIn = () => cy.get('button[title="Zoom in"]');
     buttonMapZoomOut = () => cy.get('button[aria-label="Zoom out"]');
     buttonMapReset = () => cy.get('button[aria-label="Reset bearing to north"]');
     saveFavouriteAlertModal = () => cy.get('[data-test="alertModal"]');
@@ -42,7 +45,11 @@ class ListingsPage {
         if (offerType === 'Spolubydlení') {
             offerType = 'spolubydleni'
             checkUrl(`/${offerType}/${address}`);
-        } else {
+        } else if (offerType === 'Pronájem') {
+            offerType = 'pronajem'
+            checkUrl(`/${offerType}/${propertyType}/${address}`);
+        }
+        else {
             offerType = offerType.toLowerCase();
             checkUrl(`/${offerType}/${propertyType}/${address}`);
         }
@@ -145,45 +152,6 @@ class ListingsPage {
             .should('be.visible');
     }
 
-
-    clickCreateWatchdog = () => {
-        createStep('Check that create Watchdog button is visible');
-        this.buttonWatchdog()
-            .should('be.visible');
-
-        createStep('Prepare intercepts for network requests');
-        catchReq('POST', '**/offer/count')
-            .as('filterCount');
-
-        createStep('Click the create Watchdog button');
-        this.buttonWatchdog()
-            .click();
-
-        createStep('Check that network requests were successful');
-        checkReq('filterCount', 200);
-        // TODO - Assert for filter window
-    }
-
-
-    clickChangeFilterOption = () => {
-        createStep('Check that filter option button is visible');
-        this.buttonFilter()
-            .should('be.visible');
-
-        createStep('Prepare intercepts for network requests');
-        catchReq('POST', '**/offer/count')
-            .as('filterCount');
-
-        createStep('Click the filter options button');
-        this.buttonFilter()
-            .click();
-
-        createStep('Check that network requests were successful');
-        checkReq('filterCount', 200);
-        // TODO - Assert for filter window
-    }
-
-
     changeLeasesOrder = (currentValue, newValue, newValueUrl) => {
         createStep('Check that order of leases select button is visible');
         this.selectOrderBy(currentValue)
@@ -238,7 +206,6 @@ class ListingsPage {
 
         createStep('Check that network requests were successful');
         checkReq('contactInfo', 200);
-        // TODO - Assert for contact window
     }
 
 
@@ -265,7 +232,6 @@ class ListingsPage {
 
 
     saveFirstLeaseAsFavourite = () => {
-        // TODO - Log in user
         createStep('Check that save favourite lease button is visible');
         this.firstPreviewOfLeases().within(() => this.buttonSaveOffer()
             .should('be.visible'));
@@ -351,14 +317,22 @@ class ListingsPage {
         this.buttonMapReset().click();
     }
 
-    mapSearchThisArea = () => {
-        createStep('')
+    catchMapContent = () => {
+        createStep('Catch GET request for map JSON data');
+        return cy.intercept('GET', '**/_next/data/**/*.json*').as('mapData');
     }
 
-    selectHouseType = (typeText) => {
-        cy.contains('p', typeText).click();
-    }
 
+    checkMapContent = (location) => {
+        createStep('Check that map JSON response contains expected data');
+        cy.wait('@mapData').then(({ response }) => {
+            expect(response.statusCode).to.eq(200);
+            expect(response.body).to.have.property('pageProps');
+            expect(response.body.pageProps).to.have.property('count');
+            expect(response.body.pageProps.count).to.be.greaterThan(0);
+            expect(response.body.pageProps.location).to.eq(location);
+        });
+    }
 }
 
 module.exports = new ListingsPage();
