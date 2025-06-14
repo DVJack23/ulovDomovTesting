@@ -1,5 +1,5 @@
 import {data} from '../support/data.js'
-import {createStep, catchReq, checkReq, checkUrl} from "../support/utilities.js";
+import {catchReq, checkReq, checkUrl, createStep} from "../support/utilities.js";
 
 const homepageData = data.ulovDomovData[0].homepage;
 const listingsData = data.ulovDomovData[0].listingsPage;
@@ -12,8 +12,9 @@ class ListingsPage {
     mapOfLeases = () => cy.get('[data-test="mapOfLeases"]')
     mapCanvas = () => cy.get('canvas[aria-label="Map"]');
     scrollerTopSection = () => cy.get('[data-test="searchTopSection"]');
-    scrollerHeadingSection = () => cy.get('h1.chakra-heading');
+    scrollerHeadingSection = () => cy.get('h1.chakra-heading').parent('div');
     buttonFilter = () => cy.get('[data-test="editSearchButton"]');
+    buttonFilterOption = (option) => this.scrollerHeadingSection().contains('p', option);
     buttonWatchdog = () => this.scrollerTopSection().get('[data-test="dogSetupButton"]').first();
     countOfOffers = () => cy.get('[data-test="countOfOffers"]');
     selectOrderBy = (text) => cy.contains('select', text);
@@ -33,6 +34,13 @@ class ListingsPage {
     buttonMapZoomOut = () => cy.get('button[aria-label="Zoom out"]');
     buttonMapReset = () => cy.get('button[aria-label="Reset bearing to north"]');
     saveFavouriteAlertModal = () => cy.get('[data-test="alertModal"]');
+
+    openFilterPanel = () => {
+        createStep('Open the filter panel window');
+        this.buttonFilter().should('be.visible');
+        this.buttonFilter().click();
+    }
+
 
     checkSearchResult = (offerType, propertyType, address) => {
         createStep('Check search results page')
