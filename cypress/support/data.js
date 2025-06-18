@@ -46,6 +46,9 @@ export const data = {
                 maxPrice: '25 000',
                 minArea: '50',
                 maxArea: '100'
+            },
+            offerDetailsPage: {
+                offerPrice: 10000
             }
         }
     ]

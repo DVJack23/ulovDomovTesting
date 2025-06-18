@@ -217,19 +217,32 @@ class ListingsPage {
     }
 
 
-    showFirstLeaseDetail = (buttonShowLeasesDetailText) => {
+    showFirstLeaseDetail = () => {
         createStep('Check that show lease button is visible');
         this.firstPreviewOfLeases().within(() => this.buttonShowLeasesDetail()
             .should('be.visible'));
 
         createStep('Get the first lease offer id number');
-
-        let leaseId = this.firstPreviewOfLeases().invoke('attr','id').then((val) => {
-            leaseId = val.split('.')[1];
+        let leaseId = this.firstPreviewOfLeases()
+            .invoke('attr','id')
+            .then((val) => {
+                leaseId = val.split('.')[1];
+                cy.wrap(leaseId).as('leaseId');
         });
 
+        createStep('Get the first lease title');
+        let leaseTitle = this.firstPreviewOfLeases()
+            .within(()=> {
+                this.headingLeasesPreview()
+                    .invoke('text')
+                    .then((text) =>{
+                        leaseTitle = text;
+                        cy.wrap(leaseTitle).as('leaseTitle');
+                })
+            })
+
         createStep('Click the show lease button');
-        this.firstPreviewOfLeases().within(() => this.buttonShowLeasesDetail(buttonShowLeasesDetailText)
+        this.firstPreviewOfLeases().within(() => this.buttonShowLeasesDetail()
             .click());
 
         createStep('Check that leases detail page was opened');

@@ -9,7 +9,7 @@ describe('Basic tests for ulovDomov.cz', () => {
             beforeEach(() => {
                 Header.openHomepage()
             });
-            it('# TC-UDLP01: Listing page contains all required elements', () =>{
+            it('TC-UDLP01: Listing page contains all required elements', () =>{
                 ListingsPage.catchMapContent();
                 Homepage.completeSearch(data.homepage.offerTypeOne, data.homepage.propertyTypeOne, data.homepage.basicAddress);
                 ListingsPage.checkMapContent(data.homepage.basicAddress);

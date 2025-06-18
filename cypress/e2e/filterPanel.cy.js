@@ -14,7 +14,6 @@ describe('Basic tests for ulovDomov.cz', () => {
                 Homepage.completeSearch(data.homepage.offerTypeOne, data.homepage.propertyTypeOne, data.homepage.basicAddress);
                 ListingsPage.openFilterPanel();
                 FilterPanel.setFilterForFlatRents(data.filterPanel.layoutTypeOne,data.filterPanel.minPrice,data.filterPanel.maxPrice,data.filterPanel.minArea,data.filterPanel.maxArea)
-
             })
         })
     })
