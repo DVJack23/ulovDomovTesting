@@ -76,3 +76,19 @@ export function createRandomPassword(length) {
     return password.join('');
 }
 
+export function generateRandomCzechPhoneNumber() {
+    const prefixes = ['601', '602', '603', '604', '605', '606', '607', '608', '609',
+        '720', '721', '722', '723', '724', '725', '726', '727', '728', '729',
+        '730', '731', '732', '733', '734', '735', '736', '737', '738', '739',
+        '770', '771', '772', '773', '774', '775', '776', '777', '778', '779',
+        '790', '791', '792', '793', '794', '795', '796', '797', '798', '799',
+        '910', '920'];
+
+    const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+
+    const middle = Math.floor(100 + Math.random() * 900).toString();
+    const end = Math.floor(100 + Math.random() * 900).toString();
+
+    return `${prefix}${middle}${end}`;
+}
+

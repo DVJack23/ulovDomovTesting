@@ -1,5 +1,5 @@
 import {data} from '../support/data.js'
-import {checkUrl, createStep} from "../support/utilities.js";
+import {createStep} from "../support/utilities.js";
 
 const offerDetailData = data.ulovDomovData[0].offerDetailsPage;
 let offerPriceText = offerDetailData.offerPriceText;

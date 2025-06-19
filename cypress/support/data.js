@@ -6,6 +6,9 @@ export const data = {
             userData: {
                 email: 'testUser123@testmail.com',
                 password: 'UlovDomoc123+',
+                name: 'Tonko',
+                surname: 'Test',
+                birthyear: '1988'
             },
             header: {
                 buttonAddOffer: 'Vložit inzerát',
@@ -58,6 +61,12 @@ export const data = {
                     'Patro', 'Garáž', 'Lodžie', 'Vlastnictví', 'Parkování', 'Terasa',
                     'Užitná plocha', 'Stavba', 'Datum nastěhování'
                 ]
+            },
+            contactForm: {
+                inputMoveInDate: 'Od kdy chcete bydlet *',
+                inputMessage: 'Dobrý den, mám zájem o váš inzerát …',
+                buttonSendMessage: 'Odeslat',
+                phonePrefix: '420'
             }
         }
     ]
