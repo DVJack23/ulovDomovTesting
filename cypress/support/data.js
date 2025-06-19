@@ -48,7 +48,16 @@ export const data = {
                 maxArea: '100'
             },
             offerDetailsPage: {
-                offerPrice: 10000
+                offerPrice: 10000,
+                offerPriceText: 'Cena u makléře',
+                buttonCreateWatchdog: 'Vytvořit Hlídacího psa',
+                buttonReportOffer: 'Nahlásit inzerát',
+                buttonShareOffer: 'Sdílet',
+                listOfDetails: [
+                    'Dispozice', 'Balkon', 'Bazén', 'Stav objektu', 'Sklep',
+                    'Patro', 'Garáž', 'Lodžie', 'Vlastnictví', 'Parkování', 'Terasa',
+                    'Užitná plocha', 'Stavba', 'Datum nastěhování'
+                ]
             }
         }
     ]
